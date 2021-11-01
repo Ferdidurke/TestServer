@@ -1,0 +1,5 @@
+{
+  "port": 5000,
+  "jwtSecret": "check for user",
+  "mongoUri": "mongodb+srv://Artem:49inerfc@testserver.dphqo.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+}
