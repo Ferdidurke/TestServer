@@ -4,6 +4,7 @@ const {check, validationResult} = require('express-validator')
 const config = require('config')
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
+const auth = require('../middleware/auth.middleware')
 const router = Router()
 
 router.post(
@@ -67,7 +68,6 @@ router.post(
         if (!user) {
             return res.status(400).json({message: 'Неверное имя пользователя или пароль'})
         }
-
         const isPasswordMatch = await bcrypt.compare(password, user.password)
 
         if (!isPasswordMatch) {
@@ -80,7 +80,8 @@ router.post(
             {expiresIn: '1h'}
         )
 
-        res.json(token, {userId: user.id})
+        res.json({token, firstName: user.firstName, lastName: user.lastName})
+
 
 
     } catch (error) {

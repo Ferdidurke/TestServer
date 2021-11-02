@@ -9,6 +9,7 @@ const app = express()
 app.use(bodyParser.json())
 
 app.use('/api/auth', cors(), require('./routes/auth.routes'))
+app.use('/api/blog', cors(), require('./routes/posts.routes'))
 
 const PORT = config.get('port') || 5000
 
