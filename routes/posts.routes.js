@@ -6,9 +6,9 @@ const router = Router()
 router.post('/post', async (req, res) => {
     try {
         console.log(req.body)
-        const {body, title} = req.body
+        const {author, body, title} = req.body
 
-        const post = new Post({title, body})
+        const post = new Post({author, title, body})
         console.log(post)
         await post.save()
 

@@ -2,6 +2,7 @@ const {Schema, model, Types} = require('mongoose')
 
 const PostSchema = new Schema({
     //id: {type: Number, default: 0},
+    author: {type: String, required: true},
     title: {type: String, required: true},
     date: {type: Date, default: Date.now},
     body: {type: String, required: true},
