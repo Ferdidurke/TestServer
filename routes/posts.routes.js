@@ -3,35 +3,49 @@ const Post = require('../models/Post')
 const auth = require('../middleware/auth.middleware')
 const router = Router()
 
-router.post('/post', async (req, res) => {
+router.post('/posts', async (req, res) => {
     try {
-        console.log(req.body)
-        const {author, body, title} = req.body
 
-        const post = new Post({author, title, body})
-        console.log(post)
+        const {userId, author, body, title} = req.body
+        const post = new Post({userId, author, title, body})
         await post.save()
-
         res.status(201).json({ message: 'Добавлен новый пост' })
     } catch (e) {
-
         res.status(500).json({message: 'Something wrong'})
     }
 })
 
-router.get('/ps', auth, async (req, res) => {
+router.get('/posts', auth, async (req, res) => {
     try {
-    const posts = await Post.find({userId: req.user.userId})
-    res.json(posts)
+        const posts = await Post.find()
+        res.json(posts)
     } catch (e) {
         res.status(500).json({message: 'Something wrong'})
     }
 })
+
+router.delete('/posts', auth, async (req, res) => {
+    try {
+        const { _id } = req.body
+        Post.deleteOne({ _id: _id}, function (err, data) {
+            if (err) {
+                console.log(err.message);
+            }
+        })
+        res.json({ success: _id })
+    } catch (e) {
+        res.status(500).json({message: 'Something wrong'})
+    }
+})
+
+
+
+
 
 router.get('/ps:id', auth, async (req, res) => {
     try {
-    const posts = await Post.findById(req.params.id)
-    res.json(posts)
+        const posts = await Post.findById(req.params.id)
+        res.json(posts)
     } catch (e) {
         res.status(500).json({message: 'Something wrong'})
     }

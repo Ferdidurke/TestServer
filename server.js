@@ -8,8 +8,10 @@ const app = express()
 
 app.use(bodyParser.json())
 
+app.use('/api/', cors(), require('./routes/users.routes'))
 app.use('/api/auth', cors(), require('./routes/auth.routes'))
 app.use('/api/blog', cors(), require('./routes/posts.routes'))
+app.use('/api/blog', cors(), require('./routes/comments.routes'))
 
 const PORT = config.get('port') || 5000
 

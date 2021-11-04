@@ -80,7 +80,7 @@ router.post(
             {expiresIn: '1h'}
         )
 
-        res.json({token, firstName: user.firstName, lastName: user.lastName})
+        res.json({token,userId: user._id, firstName: user.firstName, lastName: user.lastName})
 
 
 
