@@ -15,9 +15,10 @@ router.post('/posts', async (req, res) => {
     }
 })
 
-router.get('/posts', auth, async (req, res) => {
+router.get('/posts/', auth, async (req, res) => {
     try {
-        const posts = await Post.find()
+        console.log(req.query)
+        const posts = await Post.find().limit(req.query.limit).skip(req.query.skip).sort({date: 'asc'})
         res.json(posts)
     } catch (e) {
         res.status(500).json({message: 'Something wrong'})
