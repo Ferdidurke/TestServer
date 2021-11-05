@@ -18,10 +18,12 @@ router.post('/posts', async (req, res) => {
 router.get('/posts/', auth, async (req, res) => {
     try {
         console.log(req.query)
-        const posts = await Post.find().limit(req.query.limit).skip(req.query.skip).sort({date: 'asc'})
-        res.json(posts)
+        const postsLength = await Post.count()
+        const posts = await Post.find().limit(Number(req.query.limit)).skip(Number(req.query.skip)).sort({date: 'desc'})
+        res.json({ posts, counter: postsLength })
+
     } catch (e) {
-        res.status(500).json({message: 'Something wrong'})
+        res.status(500).json({ message: 'Something wrong' })
     }
 })
 
