@@ -29,7 +29,7 @@ router.delete('/posts', auth, async (req, res) => {
         const { _id } = req.body
         Post.deleteOne({ _id: _id}, function (err, data) {
             if (err) {
-                console.log(err.message);
+                console.log (err.message);
             }
         })
         res.json({ success: _id })
