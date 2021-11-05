@@ -13,7 +13,7 @@ app.use('/api/auth', cors(), require('./routes/auth.routes'))
 app.use('/api/blog', cors(), require('./routes/posts.routes'))
 app.use('/api/blog', cors(), require('./routes/comments.routes'))
 
-const PORT = config.get('port') || 5000
+const PORT = process.env.PORT || 5000
 
 async function start () {
     try {
@@ -22,7 +22,7 @@ async function start () {
            useUnifiedTopology: true,
 
        })
-        app.listen(PORT, () => console.log(`App has been started on port ${PORT}`))
+        app.listen(PORT, "0.0.0.0", () => console.log(`App has been started on port ${PORT}`))
     } catch (error) {
         console.log ('server error', error.message)
         process.exit(1)
