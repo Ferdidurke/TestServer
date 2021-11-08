@@ -3,6 +3,7 @@ const Post = require('../models/Post')
 const auth = require('../middleware/auth.middleware')
 const router = Router()
 
+
 router.post('/posts', async (req, res) => {
     try {
 
@@ -17,9 +18,9 @@ router.post('/posts', async (req, res) => {
 
 router.get('/posts/', auth, async (req, res) => {
     try {
-        console.log(req.query)
         const postsLength = await Post.count()
-        const posts = await Post.find().limit(Number(req.query.limit)).skip(Number(req.query.skip)).sort({date: 'desc'})
+        const sortType = JSON.parse(req.query.sort)
+        const posts = await Post.find().limit(Number(req.query.limit)).skip(Number(req.query.skip)).sort(sortType)
         res.json({ posts, counter: postsLength })
 
     } catch (e) {
@@ -30,14 +31,14 @@ router.get('/posts/', auth, async (req, res) => {
 router.delete('/posts', auth, async (req, res) => {
     try {
         const { _id } = req.body
-        Post.deleteOne({ _id: _id}, function (err, data) {
+        Post.deleteOne({ _id: _id }, function (err, data) {
             if (err) {
                 console.log (err.message);
             }
         })
         res.json({ success: _id })
     } catch (e) {
-        res.status(500).json({message: 'Something wrong'})
+        res.status(500).json({ message: 'Something wrong' })
     }
 })
 
