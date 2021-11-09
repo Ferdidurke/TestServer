@@ -10,7 +10,7 @@ router.post('/comments', async (req, res) => {
         const comment = new Comment({userId, postId, author, body})
         await comment.save()
 
-        res.status(201).json({ message: 'Добавлен новый комментарий' })
+        res.status(201).json({message: 'Добавлен новый комментарий'})
     } catch (e) {
 
         res.status(500).json({message: 'Something wrong'})

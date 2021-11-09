@@ -18,13 +18,15 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.patch('/', async (req, res) => {
+router.patch('/:id', async (req, res) => {
     try {
-        const { id } = req.body
-
-        const task = Task.findById(id)
-
-        res.status(201).json({ message: 'Задача удалена' })
+        const { id } = req.params
+        const patch = req.body
+        console.log(id)
+        console.log(patch)
+        const task = await Task.findByIdAndUpdate(id, patch)
+        task.save()
+        res.status(201).json({ message: 'Задача обновлена' })
     } catch (e) {
 
         res.status(500).json({message: 'Something wrong'})
@@ -42,6 +44,22 @@ router.get('/', auth, async (req, res) => {
         res.status(500).json({ message: 'Something wrong' })
     }
 })
+
+router.delete('/', auth, async (req, res) => {
+    try {
+        const { id } = req.body
+
+        Task.deleteOne({ _id: id }, function (err, data) {
+            if (err) {
+                console.log (err.message);
+            }
+        })
+        res.json({ success: id })
+    } catch (e) {
+        res.status(500).json({ message: 'Something wrong' })
+    }
+})
+
 
 
 module.exports = router
