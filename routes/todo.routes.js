@@ -1,5 +1,6 @@
 const {Router} = require('express')
 const Task = require('../models/Task')
+const Log = require('../models/Logs')
 const auth = require('../middleware/auth.middleware')
 const router = Router()
 
@@ -35,15 +36,39 @@ router.patch('/:id', async (req, res) => {
 
 
 
+
 router.get('/', auth, async (req, res) => {
     try {
         const sortType = JSON.parse(req.query.sort)
-        const tasks = await Task.find().sort(sortType)
+        console.log(req.query)
+        const { userId, isChecked, isMarkToDelete } = JSON.parse(req.query.filter)
+        const tasks = await Task.find({ userId : userId, isChecked: isChecked | null, isMarkToDelete: isMarkToDelete }).sort(sortType)
         res.json(tasks)
     } catch (e) {
         res.status(500).json({ message: 'Something wrong' })
     }
 })
+
+
+router.get('/download/tasks', auth, async (req, res) => {
+    try {
+        const file = await Task.find()
+        res.json(file)
+    } catch (e) {
+        res.status(500).json({ message: 'Something wrong' })
+    }
+})
+
+router.get('/download/logs', auth, async (req, res) => {
+    try {
+        const file = await Log.find()
+        res.json(file)
+    } catch (e) {
+        res.status(500).json({ message: 'Something wrong' })
+    }
+})
+
+
 
 router.delete('/', auth, async (req, res) => {
     try {

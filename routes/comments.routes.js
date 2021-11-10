@@ -17,8 +17,10 @@ router.post('/comments', async (req, res) => {
     }
 })
 
-router.get('/comments', auth, async (req, res) => {
+router.get('/comments/:id', auth, async (req, res) => {
     try {
+        console.log(req.params)
+        const id = req.params.id
         const comments = await Comment.find()
         res.json(comments)
     } catch (e) {
