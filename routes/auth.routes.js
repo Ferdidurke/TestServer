@@ -79,8 +79,9 @@ router.post(
             config.get('jwtSecret'),
             {expiresIn: '1h'}
         )
+        console.log(token)
 
-        res.json({token,userId: user._id, firstName: user.firstName, lastName: user.lastName})
+        res.json({token, tokenExpiresIn: 3600, userId: user._id, firstName: user.firstName, lastName: user.lastName})
 
 
 

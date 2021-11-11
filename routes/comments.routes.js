@@ -21,7 +21,7 @@ router.get('/comments/:id', auth, async (req, res) => {
     try {
         console.log(req.params)
         const id = req.params.id
-        const comments = await Comment.find()
+        const comments = await Comment.find({ postId: id })
         res.json(comments)
     } catch (e) {
         res.status(500).json({message: 'Something wrong'})

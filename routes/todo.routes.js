@@ -6,7 +6,6 @@ const router = Router()
 
 router.post('/', async (req, res) => {
     try {
-        console.log(req.body)
         const { userId, taskText, deadlineDate, createDate, isChecked, deadlineColor, isMarkToDelete, deletedDate } = req.body
 
         const task = new Task({ userId, taskText, deadlineDate, createDate, isChecked, deadlineColor, isMarkToDelete, deletedDate })
@@ -23,10 +22,22 @@ router.patch('/:id', async (req, res) => {
     try {
         const { id } = req.params
         const patch = req.body
-        console.log(id)
-        console.log(patch)
         const task = await Task.findByIdAndUpdate(id, patch)
         task.save()
+        res.status(201).json({ message: 'Задача обновлена' })
+    } catch (e) {
+
+        res.status(500).json({message: 'Something wrong'})
+    }
+})
+
+router.patch('/', async (req, res) => {
+    try {
+        const patch = req.body.update
+         for (const item of patch) {
+            const task = await Task.findByIdAndUpdate(item.id, {deadlineColor: item.deadlineColor})
+            task.save()
+        }
         res.status(201).json({ message: 'Задача обновлена' })
     } catch (e) {
 
@@ -40,9 +51,11 @@ router.patch('/:id', async (req, res) => {
 router.get('/', auth, async (req, res) => {
     try {
         const sortType = JSON.parse(req.query.sort)
-        console.log(req.query)
-        const { userId, isChecked, isMarkToDelete } = JSON.parse(req.query.filter)
-        const tasks = await Task.find({ userId : userId, isChecked: isChecked | null, isMarkToDelete: isMarkToDelete }).sort(sortType)
+        const { userId } = JSON.parse(req.query.filter)
+        const undoneTasks = await Task.find({ userId : userId, isChecked : false, isMarkToDelete : false }).sort(sortType)
+        const doneTasks = await Task.find({ userId : userId, isChecked : true, isMarkToDelete : false })
+        const deletedTasks = await Task.find( { userId: userId, isMarkToDelete: true } ).sort( { deletedDate: '-1'} )
+        const tasks = undoneTasks.concat(doneTasks, deletedTasks)
         res.json(tasks)
     } catch (e) {
         res.status(500).json({ message: 'Something wrong' })
