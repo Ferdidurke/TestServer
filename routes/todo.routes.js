@@ -65,7 +65,8 @@ router.get('/', auth, async (req, res) => {
 
 router.get('/download/tasks', auth, async (req, res) => {
     try {
-        const file = await Task.find()
+        const { userId } = req.query
+        const file = await Task.find( { userId: userId } )
         res.json(file)
     } catch (e) {
         res.status(500).json({ message: 'Something wrong' })
@@ -74,7 +75,8 @@ router.get('/download/tasks', auth, async (req, res) => {
 
 router.get('/download/logs', auth, async (req, res) => {
     try {
-        const file = await Log.find()
+
+        const file = await Log.find( )
         res.json(file)
     } catch (e) {
         res.status(500).json({ message: 'Something wrong' })

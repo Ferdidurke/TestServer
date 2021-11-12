@@ -3,7 +3,7 @@ const Comment = require('../models/Comment')
 const auth = require('../middleware/auth.middleware')
 const router = Router()
 
-router.post('/comments', async (req, res) => {
+router.post('/comments', auth, async (req, res) => {
     try {
         const { userId, postId, author, body } = req.body
 
@@ -17,7 +17,18 @@ router.post('/comments', async (req, res) => {
     }
 })
 
-router.get('/comments/:id', auth, async (req, res) => {
+
+router.delete('/comments', auth, async (req, res) => {
+    const { _id } = req.body
+    Comment.deleteOne({ _id: _id }, function (err, data) {
+        if (err) {
+            console.log (err.message);
+        }
+    })
+    res.json({ success: _id })
+})
+
+router.get('/comments/:id', async (req, res) => {
     try {
         console.log(req.params)
         const id = req.params.id

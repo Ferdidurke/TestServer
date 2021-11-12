@@ -16,7 +16,7 @@ router.post('/posts', async (req, res) => {
     }
 })
 
-router.get('/posts', auth, async (req, res) => {
+router.get('/posts', async (req, res) => {
     try {
         const postsLength = await Post.count()
         const sortType = JSON.parse(req.query.sort)
@@ -46,7 +46,7 @@ router.delete('/posts', auth, async (req, res) => {
 
 
 
-router.get('/posts/:id', auth, async (req, res) => {
+router.get('/posts/:id', async (req, res) => {
     try {
         const posts = await Post.findById(req.params.id)
         res.json(posts)
