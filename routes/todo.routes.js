@@ -11,7 +11,7 @@ router.post('/', async (req, res) => {
         const task = new Task({ userId, taskText, deadlineDate, createDate, isChecked, deadlineColor, isMarkToDelete, deletedDate })
         await task.save()
 
-        res.status(201).json({ message: 'Добавленa новая задача' })
+        res.status(201).json({ message: 'Add new task' })
     } catch (e) {
 
         res.status(500).json({message: 'Something wrong'})
@@ -24,10 +24,10 @@ router.patch('/:id', async (req, res) => {
         const patch = req.body
         const task = await Task.findByIdAndUpdate(id, patch)
         task.save()
-        res.status(201).json({ message: 'Задача обновлена' })
+        res.status(201).json({ message: 'Task has been successfully changed' })
     } catch (e) {
 
-        res.status(500).json({message: 'Something wrong'})
+        res.status(500).json({ message: 'Something wrong' })
     }
 })
 
@@ -35,10 +35,10 @@ router.patch('/', async (req, res) => {
     try {
         const patch = req.body.update
          for (const item of patch) {
-            const task = await Task.findByIdAndUpdate(item.id, {deadlineColor: item.deadlineColor})
+            const task = await Task.findByIdAndUpdate(item.id, { deadlineColor: item.deadlineColor} )
             task.save()
         }
-        res.status(201).json({ message: 'Задача обновлена' })
+        res.status(201).json({ message: 'Task has been successfully changed' })
     } catch (e) {
 
         res.status(500).json({message: 'Something wrong'})

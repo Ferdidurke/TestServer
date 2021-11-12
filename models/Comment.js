@@ -1,12 +1,11 @@
 const {Schema, model, Types} = require('mongoose')
 
 const CommentSchema = new Schema({
-    id: {type: Number, default: 0},
-    author: {type: String, required: true},
-    date: {type: Date, default: Date.now},
-    body: {type: String, required: true},
-    userId: {type: Types.ObjectId, ref: 'User'},
-    postId: {type: Types.ObjectId, ref: 'Post'}
+    author: { type: String, required: true },
+    date: { type: Date, default: Date.now },
+    body: { type: String, required: true },
+    userId: { type: Types.ObjectId, ref: 'User' },
+    postId: { type: Types.ObjectId, ref: 'Post' }
 
 })
 

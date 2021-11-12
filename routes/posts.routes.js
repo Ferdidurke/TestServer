@@ -7,12 +7,12 @@ const router = Router()
 router.post('/posts', async (req, res) => {
     try {
 
-        const {userId, author, body, title} = req.body
-        const post = new Post({userId, author, title, body})
+        const { userId, author, body, title } = req.body
+        const post = new Post({ userId, author, title, body })
         await post.save()
-        res.status(201).json({ message: 'Добавлен новый пост' })
+        res.status(201).json({ message: 'Add new post' })
     } catch (e) {
-        res.status(500).json({message: 'Something wrong'})
+        res.status(500).json({ message: 'Something wrong' })
     }
 })
 
@@ -51,7 +51,7 @@ router.get('/posts/:id', auth, async (req, res) => {
         const posts = await Post.findById(req.params.id)
         res.json(posts)
     } catch (e) {
-        res.status(500).json({message: 'Something wrong'})
+        res.status(500).json({ message: 'Something wrong' })
     }
 })
 
