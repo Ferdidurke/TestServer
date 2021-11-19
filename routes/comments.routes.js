@@ -31,6 +31,7 @@ router.delete('/comments', auth, async (req, res) => {
 router.get('/comments/:id', async (req, res) => {
     try {
         console.log(req.params)
+
         const id = req.params.id
         const comments = await Comment.find({ postId: id })
         res.json(comments)

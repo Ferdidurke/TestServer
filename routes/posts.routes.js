@@ -4,7 +4,7 @@ const auth = require('../middleware/auth.middleware')
 const router = Router()
 
 
-router.post('/posts', async (req, res) => {
+router.post('/posts', auth, async (req, res) => {
     try {
 
         const { userId, author, body, title } = req.body
@@ -18,6 +18,7 @@ router.post('/posts', async (req, res) => {
 
 router.get('/posts', async (req, res) => {
     try {
+        console.log(req.query)
         const postsLength = await Post.count()
         const sortType = JSON.parse(req.query.sort)
         const posts = await Post.find().limit(Number(req.query.limit)).skip(Number(req.query.skip)).sort(sortType)
@@ -31,6 +32,7 @@ router.get('/posts', async (req, res) => {
 router.delete('/posts', auth, async (req, res) => {
     try {
         const { _id } = req.body
+        console.log(req.body)
         Post.deleteOne({ _id: _id }, function (err, data) {
             if (err) {
                 console.log (err.message);

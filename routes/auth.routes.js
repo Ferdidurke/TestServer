@@ -22,7 +22,7 @@ router.post(
                 message: 'Incorrect registration data'
             })
         }
-
+        console.log(req.body)
         const { email, password, firstName, lastName } = req.body
 
 
@@ -32,9 +32,9 @@ router.post(
             return res.status(400).json({ message: 'User already exist' })
         }
 
-        const hashedPassword = await bcrypt.hash(password,12)
-        const  user = new User ({email, password: hashedPassword, firstName, lastName})
 
+        const hashedPassword = await bcrypt.hash(password,12)
+        const user = new User ({email, password: hashedPassword, firstName, lastName})
         await user.save()
 
         res.status(201).json({ message: 'New user created' })
@@ -89,6 +89,9 @@ router.post(
         res.status(500).json ( { message: 'ERROR' })
     }
 })
+
+
+
 
 
 module.exports = router
