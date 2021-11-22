@@ -32,7 +32,6 @@ router.get('/posts', async (req, res) => {
 router.delete('/posts', auth, async (req, res) => {
     try {
         const { _id } = req.body
-        console.log(req.body)
         Post.deleteOne({ _id: _id }, function (err, data) {
             if (err) {
                 console.log (err.message);
@@ -50,7 +49,9 @@ router.delete('/posts', auth, async (req, res) => {
 
 router.get('/posts/:id', async (req, res) => {
     try {
+
         const posts = await Post.findById(req.params.id)
+        console.log(posts)
         res.json(posts)
     } catch (e) {
         res.status(500).json({ message: 'Something wrong' })
