@@ -18,7 +18,6 @@ router.post('/posts', auth, async (req, res) => {
 
 router.get('/posts', async (req, res) => {
     try {
-        console.log(req.query)
         const postsLength = await Post.count()
         const sortType = JSON.parse(req.query.sort)
         const posts = await Post.find().limit(Number(req.query.limit)).skip(Number(req.query.skip)).sort(sortType)
@@ -51,7 +50,6 @@ router.get('/posts/:id', async (req, res) => {
     try {
 
         const posts = await Post.findById(req.params.id)
-        console.log(posts)
         res.json(posts)
     } catch (e) {
         res.status(500).json({ message: 'Something wrong' })

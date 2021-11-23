@@ -2,9 +2,9 @@ const {Router} = require('express')
 const bcrypt = require('bcryptjs')
 const {check, validationResult} = require('express-validator')
 const config = require('config')
+const auth = require('../middleware/auth.middleware')
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
-const auth = require('../middleware/auth.middleware')
 const router = Router()
 
 router.post(
@@ -61,9 +61,9 @@ router.post(
             })
         }
 
-        const {email, password} = req.body
+        const { email, password } = req.body
 
-        const user = await User.findOne({email})
+        const user = await User.findOne({ email })
 
         if (!user) {
             return res.status(400).json({ message: 'Incorrect username or password' })
@@ -80,8 +80,7 @@ router.post(
             { expiresIn: '1h' }
         )
 
-
-        res.json({token, userId: user._id, firstName: user.firstName, lastName: user.lastName})
+        res.json({ token })
 
 
 
@@ -90,7 +89,15 @@ router.post(
     }
 })
 
-
+router.get('/me', auth, async (req, res) => {
+    try {
+        const userId = req.user.userId
+        const user = await User.findById(userId)
+        res.json({ id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email })
+    } catch (e) {
+        res.status(500).json({message: 'Something wrong'})
+    }
+})
 
 
 

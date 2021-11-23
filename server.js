@@ -8,7 +8,7 @@ const app = express()
 
 app.use(bodyParser.json())
 
-app.use('/api/', cors(), require('./routes/users.routes'))
+
 app.use('/api/todo', cors(), require('./routes/todo.routes'))
 app.use('/api/logs', cors(), require('./routes/logs.routes'))
 app.use('/api/auth', cors(), require('./routes/auth.routes'))

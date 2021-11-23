@@ -6,7 +6,6 @@ const router = Router()
 router.post('/comments', auth, async (req, res) => {
     try {
         const { userId, postId, author, body } = req.body
-
         const comment = new Comment({ userId, postId, author, body })
         await comment.save()
 
@@ -30,7 +29,6 @@ router.delete('/comments', auth, async (req, res) => {
 
 router.get('/comments/:id', async (req, res) => {
     try {
-        console.log(req.params)
 
         const id = req.params.id
         const comments = await Comment.find({ postId: id })
